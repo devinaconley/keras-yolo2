@@ -1,0 +1,38 @@
+settings:
+  name: custom-yolo2
+  description: This is an experiment to run hpo over a model fit custom object detection
+  author:
+    name: Devin A. Conley
+    email: devinaconley@ibm.com
+training_references:
+- name: custom-yolo2
+  training_definition_url: https://ibm-watson-ml.mybluemix.net/v3/ml_assets/training_definitions/<training_def_id>
+  command: unzip ${DATA_DIR}/wheels.zip
+    && pip install --no-index --find-links=wheels -r requirements.txt
+    && python3 train.py --conf config.json
+  compute_configuration:
+      name: k80
+  hyper_parameters_optimization:
+    method:
+      name: random
+      parameters:
+      - name: objective
+        string_value: accuracy
+      - name: maximize_or_minimize
+        string_value: maximize
+      - name: num_optimizer_steps
+        int_value: 10
+    hyper_parameters:
+    - name: learning_rate
+      double_range:
+        min_value: 0.005
+        max_value: 0.01
+training_results_reference:
+  name: training-results-reference_name
+  connection:
+    endpoint_url: <URL>
+    access_key_id: <ACCESS KEY>
+    secret_access_key: <SECRET ACCESS KEY>
+  target:
+    bucket: training-data
+  type: s3

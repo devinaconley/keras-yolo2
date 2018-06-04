@@ -1,0 +1,39 @@
+model_definition:
+  framework:
+#framework name and version (supported list of frameworks available at 'bx ml list frameworks')
+   name: tensorflow
+   version: '1.5'
+   runtimes:
+     name: python
+     version: '3.5'
+#name of the training-run
+  name: custom-yolo2-training-run
+  description: This training job fine-tunes a yolo2 network for custom object detection
+  execution:
+#Command to execute
+    command: unzip ${DATA_DIR}/wheels.zip
+      && pip install --no-index --find-links=wheels -r requirements.txt
+      && python3 train.py --conf config.json
+    compute_configuration:
+#Valid values for name - k80/k80x2/k80x4/p100/p100x2/v100/v100x2
+      name: k80
+training_data_reference:
+#Source connection object credentials
+  name: training-data-reference_name
+  connection: 
+    endpoint_url: https://s3-api.us-geo.objectstorage.softlayer.net
+    access_key_id: 
+    secret_access_key: 
+  source:
+    bucket: source_bucket
+  type: s3
+training_results_reference:
+#Target connection object credentials
+  name: training-results-reference_name
+  connection: 
+    endpoint_url: https://s3-api.us-geo.objectstorage.softlayer.net
+    access_key_id: 
+    secret_access_key: 
+  target:
+    bucket: target_bucket
+  type: s3

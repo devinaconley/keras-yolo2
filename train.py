@@ -24,6 +24,26 @@ def _main_(args):
     with open(config_path) as config_buffer:    
         config = json.loads(config_buffer.read())
 
+    # prepend path to COS bucket
+    if 'DATA_DIR' in os.environ:
+        config['train']['train_image_folder'] = '{}/{}'.format(
+            os.environ['DATA_DIR'],
+            config['train']['train_image_folder']
+        )
+        config['train']['train_annot_folder'] = '{}/{}'.format(
+            os.environ['DATA_DIR'],
+            config['train']['train_annot_folder']
+        )
+        config['train']['pretrained_weights'] = '{}/{}'.format(
+            os.environ['DATA_DIR'],
+            config['train']['pretrained_weights']
+        )
+    if 'RESULT_DIR' in os.environ:
+        config['train']['saved_weights_name'] = '{}/{}'.format(
+            os.environ['RESULT_DIR'],
+            config['train']['saved_weights_name']
+        )
+
     ###############################
     #   Parse the annotations 
     ###############################

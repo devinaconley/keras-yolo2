@@ -1,0 +1,30 @@
+name: custom-yolo2-training-def
+description: This training job fine tunes a yolo2 network for custom object detection
+framework:
+#framework name and version (supported list of frameworks available at 'bx ml list frameworks')
+  name: tensorflow
+  version: '1.5'
+  runtimes:
+    name: python
+    version: '3.5'
+command: echo "training definition created"
+training_data_reference:
+#Source connection object credentials
+- name: training-data-reference_name
+  connection:
+    endpoint_url: https://s3-api.us-geo.objectstorage.softlayer.net
+    access_key_id:
+    secret_access_key:
+  source:
+    bucket: source_bucket
+  type: s3
+training_results_reference:
+#Target connection object credentials
+- name: training-results-reference_name
+  connection:
+    endpoint_url: https://s3-api.us-geo.objectstorage.softlayer.net
+    access_key_id:
+    secret_access_key:
+  target:
+    bucket: target_bucket
+  type: s3
