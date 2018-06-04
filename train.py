@@ -34,10 +34,11 @@ def _main_(args):
             os.environ['DATA_DIR'],
             config['train']['train_annot_folder']
         )
-        config['train']['pretrained_weights'] = '{}/{}'.format(
-            os.environ['DATA_DIR'],
-            config['train']['pretrained_weights']
-        )
+        if config['train']['pretrained_weights']:
+            config['train']['pretrained_weights'] = '{}/{}'.format(
+                os.environ['DATA_DIR'],
+                config['train']['pretrained_weights']
+            )
     if 'RESULT_DIR' in os.environ:
         config['train']['saved_weights_name'] = '{}/{}'.format(
             os.environ['RESULT_DIR'],
